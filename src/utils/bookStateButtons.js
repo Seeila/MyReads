@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 
@@ -17,20 +16,40 @@ class BookStateButtons extends Component {
 
       return (
          <div className='book-state-buttons'>
-            <ul>
-               <li className='book-state-button'>
-                  <button aria-setsize={shelves.length + 1} aria-posinset="1"  onClick={() => updateCurrentShelf('all')}>All</button>
-               </li>
+            <ul role="listbox">
                {shelves.map((shelf, index) => (
-                  <li key={shelf} className='book-state-button'>
+                  <li key={shelf}>
+                     {shelf === 'all' && (
+                        <button
+                           aria-setsize={shelves.length}
+                           aria-posinset={index + 1}
+                           onClick={() => updateCurrentShelf(shelf)}
+                           className='book-state-button'
+                        >All</button>
+                     )}
                      {shelf === 'currentlyReading' && (
-                        <button aria-setsize={shelves.length + 1} aria-posinset={index + 2} onClick={() => updateCurrentShelf(shelf)}>Reading</button>
+                        <button
+                           aria-setsize={shelves.length}
+                           aria-posinset={index + 1}
+                           onClick={() => updateCurrentShelf(shelf)}
+                           className='book-state-button'
+                        >Reading</button>
                      )}
                      {shelf === 'wantToRead' && (
-                        <button aria-setsize={shelves.length + 1} aria-posinset={index + 2} onClick={() => updateCurrentShelf(shelf)}>Whishlist</button>
+                        <button
+                           aria-setsize={shelves.length}
+                           aria-posinset={index + 1}
+                           onClick={() => updateCurrentShelf(shelf)}
+                           className='book-state-button'
+                        >Whishlist</button>
                      )}
                      {shelf === 'read' && (
-                        <button aria-setsize={shelves.length + 1} aria-posinset={index + 2} onClick={() => updateCurrentShelf(shelf)}>Read</button>
+                        <button
+                           aria-setsize={shelves.length}
+                           aria-posinset={index + 1}
+                           onClick={() => updateCurrentShelf(shelf)}
+                           className='book-state-button'
+                        >Read</button>
                      )}
                   </li>
                ))}

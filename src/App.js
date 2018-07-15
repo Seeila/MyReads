@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import './App.css';
 import BookStateButtons from './utils/bookStateButtons';
+import BookShelf from './utils/shelf';
 import * as BooksAPI from './utils/BooksAPI';
 
 class App extends Component {
@@ -18,9 +19,8 @@ class App extends Component {
          this.setState({ books }) // ({contacts}) = ({ contacts: contacts})
       }).then((books) => {
          //makes a list of the different existing book shelves
-         let shelves = [... new Set( this.state.books.map(book => book.shelf) )]
+         let shelves = ['all', ... new Set( this.state.books.map(book => book.shelf) )]
          this.setState({shelves});
-         console.log(this.state.shelves);
       });
    }
 
@@ -28,7 +28,7 @@ class App extends Component {
       updateCurrentShelf = (shelf) => {
          this.setState((state) => ({
             currentShelf: shelf
-         }), this.consoleThis)
+         }))
 
       }
 
@@ -39,7 +39,7 @@ class App extends Component {
    render() {
       let showingBooks = this.state.books;
       console.log(showingBooks);
-      const { shelves } = this.state
+      const { shelves, books } = this.state
       console.log(shelves.length);
 
       if(shelves.length) {
@@ -60,7 +60,20 @@ class App extends Component {
                )}/>
 
                <main className="app-content">
-                  <BookStateButtons currentShelf={this.state.currentShelf} shelves={this.state.shelves} updateCurrentShelf={this.updateCurrentShelf}/>
+                  <BookStateButtons
+                     currentShelf={this.state.currentShelf}
+                     shelves={this.state.shelves}
+                     updateCurrentShelf={this.updateCurrentShelf}
+                  />
+
+                  {shelves.map((shelf) => (
+                     <BookShelf
+                        shelf={shelf}
+                        books={this.state.books}
+                        updateCurrentShelf={this.updateCurrentShelf}
+                        key={shelf}
+                     />
+                  ))}
                </main>
 
                <footer className="app-footer">
