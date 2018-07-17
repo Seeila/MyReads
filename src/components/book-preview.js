@@ -7,7 +7,7 @@ class BookPreview extends Component {
    static propTypes = {
       book: PropTypes.object.isRequired,
       shelf: PropTypes.string.isRequired,
-      updateCurrentShelf : PropTypes.func.isRequired
+      updateCurrentShelf : PropTypes.func.isRequired,
    }
 
 

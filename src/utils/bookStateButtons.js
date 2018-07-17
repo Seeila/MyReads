@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 
@@ -20,36 +21,16 @@ class BookStateButtons extends Component {
                {shelves.map((shelf, index) => (
                   <li key={shelf}>
                      {shelf === 'all' && (
-                        <button
-                           aria-setsize={shelves.length}
-                           aria-posinset={index + 1}
-                           onClick={() => updateCurrentShelf(shelf)}
-                           className='book-state-button'
-                        >All</button>
+                       <Link to="/" className="shelf-button">All</Link>
                      )}
                      {shelf === 'currentlyReading' && (
-                        <button
-                           aria-setsize={shelves.length}
-                           aria-posinset={index + 1}
-                           onClick={() => updateCurrentShelf(shelf)}
-                           className='book-state-button'
-                        >Reading</button>
+                        <Link to="/reading" className="shelf-button">Reading</Link>
                      )}
                      {shelf === 'wantToRead' && (
-                        <button
-                           aria-setsize={shelves.length}
-                           aria-posinset={index + 1}
-                           onClick={() => updateCurrentShelf(shelf)}
-                           className='book-state-button'
-                        >Whishlist</button>
+                       <Link to="/whishlist" className="shelf-button">Whishlist</Link>
                      )}
                      {shelf === 'read' && (
-                        <button
-                           aria-setsize={shelves.length}
-                           aria-posinset={index + 1}
-                           onClick={() => updateCurrentShelf(shelf)}
-                           className='book-state-button'
-                        >Read</button>
+                       <Link to="/read" className="shelf-button">Read</Link>
                      )}
                   </li>
                ))}

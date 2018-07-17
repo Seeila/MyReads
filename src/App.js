@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import './App.css';
-import BookStateButtons from './utils/bookStateButtons';
-import BookShelf from './utils/shelf';
+import Header from './components/header';
+import Footer from './components/footer';
+import AppLoader from './components/appLoader';
+import ShelfLinks from './components/shelfLink';
+import BookShelf from './templates/shelf';
 import * as BooksAPI from './utils/BooksAPI';
 
 class App extends Component {
@@ -11,7 +14,7 @@ class App extends Component {
       books: [],
       currentShelf: 'all',
       shelves: [],
-
+      shelvesName: [],
    }
 
    componentDidMount() {
@@ -19,11 +22,39 @@ class App extends Component {
          this.setState({ books }) // ({contacts}) = ({ contacts: contacts})
       }).then((books) => {
          //makes a list of the different existing book shelves
-         let shelves = ['all', ... new Set( this.state.books.map(book => book.shelf) )]
-         this.setState({shelves});
+         let shelves = ['all', ...new Set( this.state.books.map(book => book.shelf) )];
+
+          this.setState({shelves});
+
+      }).then((books) => {
+          this.changeShelfName();
       });
    }
-
+      changeShelfName = (shelves = []) => {
+        //if shelves is an array, map through it and change the names of the shelfs to set them in the state shelvesName. Used for rendering the bookshelfs and their titles
+        if(Array.isArray(shelves)) {
+          let shelvesName = this.state.shelves.map((shelf) => {
+            if(shelf === 'currentlyReading') {
+              return 'reading'
+            } else if(shelf === 'wantToRead') {
+              return 'whishlist'
+            } else {
+              return shelf
+            }
+          });
+          this.setState({shelvesName});
+          console.log('y' +this.state.shelvesName);
+        // if not an array return the value of shelves. used for the titles. Used for the shelf buttons
+        } else {
+          if(shelves === 'currentlyReading') {
+            return 'reading'
+          } else if(shelves === 'wantToRead') {
+            return 'whishlist'
+          } else {
+            return shelves
+          }
+        }
+      }
 
       updateCurrentShelf = (shelf) => {
          this.setState((state) => ({
@@ -32,58 +63,43 @@ class App extends Component {
 
       }
 
-      consoleThis() {
-         console.log(this.state.currentShelf);
-      }
 
    render() {
       let showingBooks = this.state.books;
       console.log(showingBooks);
-      const { shelves, books } = this.state
-      console.log(shelves.length);
+      const { shelves, books,currentShelf, shelvesName } = this.state;
 
-      if(shelves.length) {
+      if(shelvesName.length) {
          return (
             <div className="app">
-
-               <Route path="/" render={() => (
-                  <header className="app-header">
-                    <Link to="/" className="app-logo">MyReads</Link>
-                    <Link to="/search" className="app-search">Search</Link>
-                  </header>
-               )}/>
-
-               <Route exact path="/search" render={() => (
-                  <header className="app-header">
-                    <Link to="/" className="app-logo">MyReads</Link>
-                  </header>
-               )}/>
+                <Header  />
 
                <main className="app-content">
-                  <BookStateButtons
-                     currentShelf={this.state.currentShelf}
-                     shelves={this.state.shelves}
+                  <ShelfLinks
+                     currentShelf={currentShelf}
+                     shelves={shelvesName}
                      updateCurrentShelf={this.updateCurrentShelf}
                   />
 
                   {shelves.map((shelf) => (
                      <BookShelf
                         shelf={shelf}
-                        books={this.state.books}
+                        changeShelfName={this.changeShelfName}
+                        books={books}
                         updateCurrentShelf={this.updateCurrentShelf}
                         key={shelf}
                      />
                   ))}
                </main>
 
-               <footer className="app-footer">
-                   Copyright Sarah Hick - 2018
-               </footer>
+               <Footer/>
 
             </div>
          );
       } else {
-         return(<p>Still loading</p>);
+         return(
+           <AppLoader/>
+         );
       }
 
    }
