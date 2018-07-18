@@ -7,12 +7,11 @@ class BookPreview extends Component {
    static propTypes = {
       book: PropTypes.object.isRequired,
       shelf: PropTypes.string.isRequired,
-      updateCurrentShelf : PropTypes.func.isRequired,
    }
 
 
    render() {
-      const { shelf, book, updateCurrentShelf } = this.props;
+      const { shelf, book} = this.props;
 
       let authors = '';
       book.authors.forEach((author, index) => {
@@ -26,8 +25,8 @@ class BookPreview extends Component {
       return (
          <article className='book' style={{
             backgroundImage: `url(${book.imageLinks.thumbnail})`
-         }}>
-            <Link to="/">
+            }}>
+            <Link to={{pathname: `/book/${book.id}`,  params : {book: book, bookId: book.id, authors: authors}}}>
                <img src={book.imageLinks.smallThumbnail} alt="{book.title}" className="book-cover"/>
                <h3 className="book-title">{book.title}</h3>
                <h4 className="book-authors">{authors}</h4>
