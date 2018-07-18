@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { HashLink as Link } from 'react-router-hash-link';
 import PropTypes from 'prop-types';
 
 
 class ShelfLinks extends Component {
 
    static propTypes = {
-      currentShelf: PropTypes.string.isRequired,
       shelves: PropTypes.array.isRequired,
-      updateCurrentShelf : PropTypes.func.isRequired
+      shelvesName: PropTypes.array.isRequired,
    }
 
    render() {
-     console.log('you' + this.props.shelves);
+     const { shelves, shelvesName } = this.props;
+
       return (
          <div className='book-state-buttons'>
             <nav>
-               {this.props.shelves.map((shelf, index) => (
-                  <Link to={`/#${shelf}`} className="shelf-button" key={shelf}>{shelf}</Link>
+               {shelves.map((shelf, index) => (
+                  <Link to={`/${shelf}`} className="shelf-button" key={shelf}>{shelvesName[index]}</Link>
                ))}
             </nav>
          </div>

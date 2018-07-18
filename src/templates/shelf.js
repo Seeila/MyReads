@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Route } from 'react-router-dom'
 import Book from '../components/book-preview';
 import PropTypes from 'prop-types';
 
@@ -15,12 +16,13 @@ class Bookshelf extends Component {
    render() {
       const { shelf, books, updateCurrentShelf,changeShelfName } = this.props;
 
-      let shelfName = changeShelfName(shelf);
       // if the shelf is not all, filter the book with their shelf location
       let booksOnShelve = shelf !== 'all' ? books.filter((book) => book.shelf === shelf) : books;
 
+      let shelfName = changeShelfName(shelf);
+
       return (
-         <section className='book-shelf' id={shelf}>
+         <section className='book-shelf' id={shelfName}>
             <h2>{shelfName}</h2>
             {booksOnShelve.map((book) => (
                <Book
@@ -31,6 +33,7 @@ class Bookshelf extends Component {
                />
             ))}
          </section>
+
       )
    }
 }

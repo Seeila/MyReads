@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
+
 import './App.css';
 import Header from './components/header';
 import Footer from './components/footer';
 import AppLoader from './components/appLoader';
 import ShelfLinks from './components/shelfLink';
+import AllBookshelves from './templates/allShelf';
 import BookShelf from './templates/shelf';
 import * as BooksAPI from './utils/BooksAPI';
 
@@ -56,6 +58,7 @@ class App extends Component {
         }
       }
 
+
       updateCurrentShelf = (shelf) => {
          this.setState((state) => ({
             currentShelf: shelf
@@ -69,28 +72,56 @@ class App extends Component {
       console.log(showingBooks);
       const { shelves, books,currentShelf, shelvesName } = this.state;
 
+
       if(shelvesName.length) {
+
+
+
          return (
             <div className="app">
-                <Header  />
 
-               <main className="app-content">
+            <Header  />
+
                   <ShelfLinks
                      currentShelf={currentShelf}
-                     shelves={shelvesName}
-                     updateCurrentShelf={this.updateCurrentShelf}
+                     shelves={shelves}
+                     shelvesName={shelvesName}
                   />
 
-                  {shelves.map((shelf) => (
-                     <BookShelf
-                        shelf={shelf}
-                        changeShelfName={this.changeShelfName}
-                        books={books}
-                        updateCurrentShelf={this.updateCurrentShelf}
-                        key={shelf}
+
+                  {/*we map through all existing shelves*/}
+                  {shelves.map((shelf) => {
+                     // if the shelf is not all, show only the book of this shelf
+                     if(shelf !== "all")
+                        return <Route
+                           key={shelf}
+                           exact path={`/${shelf}`}
+                           render={props => (
+                              <BookShelf
+                                   shelf={shelf}
+                                   changeShelfName={this.changeShelfName}
+                                   books={books}
+                                   updateCurrentShelf={this.updateCurrentShelf}
+                                   {...props}
+                              />)
+                           }
+                        />
+                     //if shelf is all, show all the shelves
+                     return <Route
+                        key="all"
+                        exact path="/(|all)"
+                        render={props => (
+                           <AllBookshelves
+                                shelves={shelves}
+                                changeShelfName={this.changeShelfName}
+                                books={books}
+                                updateCurrentShelf={this.updateCurrentShelf}
+                                {...props}
+                           />)
+                        }
                      />
-                  ))}
-               </main>
+                  })}
+
 
                <Footer/>
 
