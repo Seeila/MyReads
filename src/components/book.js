@@ -1,30 +1,18 @@
-import React, { Component } from 'react';
-import { Link, Route } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
 
-class Book extends Component {
+class Shelf extends Component {
+  render() {
+    const { books, match } = this.props;
+    const book = books.find(el => el.id === match.params.id);
 
-   render() {
-      const { shelf, book} = this.props;
-      // <article className='book' style={{
-      //    backgroundImage: `url(${book.imageLinks.thumbnail})`
-      //    }}>
-      //    <Link to={`/book/${book.id}`}>
-      //       <img src={book.imageLinks.smallThumbnail} alt="{book.title}" className="book-cover"/>
-      //       <h3 className="book-title">{book.title}</h3>
-      //       <h4 className="book-authors">{authors}</h4>
-      //       <p className="book-description">{book.description}</p>
-      //       <button className="book-shelf" aria-label={book.shelf}>X</button>
-      //    </Link>
-      // </article>
+    console.log(book);
 
-      return (
-
-         <div><p>Hello</p></div>
-
-      )
-   }
+    return (
+      <div>
+        <h3>{book.title}</h3>
+      </div>
+    );
+  }
 }
 
-
-export default Book
+export default Shelf;

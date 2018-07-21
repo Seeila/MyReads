@@ -1,131 +1,65 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
-
 import "./App.css";
+import { Route, Redirect } from "react-router-dom";
 import Header from "./components/header";
-import Footer from "./components/footer";
-import AppLoader from "./components/appLoader";
 import ShelfLinks from "./components/shelfLink";
-import Book from "./components/book";
-import AllBookshelves from "./templates/allShelf";
-import BookShelf from "./templates/shelf";
-import * as BooksAPI from "./utils/BooksAPI";
+import Footer from "./components/footer";
+import Shelf from "./components/shelf";
+import * as BooksAPI from "./data/BooksAPI";
 
 class App extends Component {
-   state = {
-      books: [],
-      currentShelf: "all",
-      shelves: [],
-      shelvesName: []
-   };
+  constructor(props) {
+    super(props);
 
-   componentDidMount() {
-      BooksAPI.getAll()
-         .then(books => {
-            this.setState({ books }); // ({contacts}) = ({ contacts: contacts})
-         })
-         .then(books => {
-            //makes a list of the different existing book shelves
-            let shelves = [
-               "all",
-               ...new Set(this.state.books.map(book => book.shelf))
-            ];
-            this.setState({ shelves });
-         })
-         .then(books => {
-            this.changeShelfName();
-         });
-   }
+    this.state = {
+      data: []
+    };
+  }
 
-   changeShelfName = (shelves = []) => {
-      //if shelves is an array, map through it and change the names of the shelfs to set them in the state shelvesName. Used for rendering the bookshelfs and their titles
-      if (Array.isArray(shelves)) {
-         let shelvesName = this.state.shelves.map(shelf => {
-            if (shelf === "currentlyReading") {
-               return "reading";
-            } else if (shelf === "wantToRead") {
-               return "whishlist";
-            } else {
-               return shelf;
-            }
-         });
+  componentDidMount() {
+    BooksAPI.getAll().then(data => this.setState({ data }));
+  }
 
-         this.setState({ shelvesName });
-         // if not an array return the value of shelves. used for the titles. Used for the shelf buttons
-      } else {
-         if (shelves === "currentlyReading") {
-            return "reading";
-         } else if (shelves === "wantToRead") {
-            return "whishlist";
-         } else {
-            return shelves;
-         }
-      }
-   };
+  render() {
+    const { data } = this.state;
 
-   render() {
-      let showingBooks = this.state.books;
-      console.log(showingBooks);
-      const { shelves, books, currentShelf, shelvesName } = this.state;
+    if (!data.length) {
+      return <p>loading</p>;
+    }
 
-      if (shelvesName.length) {
-         return (
-            <div className="app">
-               <Header />
+    const shelves = ["all", ...new Set(data.map(book => book.shelf))];
 
-               <ShelfLinks
-                  currentShelf={currentShelf}
-                  shelves={shelves}
-                  shelvesName={shelvesName}
-               />
+    return (
+      <div className="App">
+        <Header />
 
-               {/*we map through all existing shelves*/}{" "}
-               {shelves.map(shelf => {
-                  // if the shelf is not all, show only the book of this shelf
-                  if (shelf !== "all")
-                     return (
-                        <Route
-                           key={shelf}
-                           exact
-                           path={`/${shelf}`}
-                           render={props => (
-                              <BookShelf
-                                 shelf={shelf}
-                                 changeShelfName={this.changeShelfName}
-                                 books={books}
-                                 updateCurrentShelf={this.updateCurrentShelf}
-                                 {...props}
-                              />
-                           )}
-                        />
-                     );
-                  //if shelf is all, show all the shelves
-                  return (
-                     <Route
-                        key="all"
-                        exact
-                        path="/(|all)"
-                        render={props => (
-                           <AllBookshelves
-                              shelves={shelves}
-                              changeShelfName={this.changeShelfName}
-                              books={books}
-                              updateCurrentShelf={this.updateCurrentShelf}
-                              {...props}
-                           />
-                        )}
-                     />
-                  );
-               })}
+        <ShelfLinks data={data} shelves={shelves} />
 
-               <Footer />
+        <main>
+          <Route
+            exact
+            path="/"
+            render={({ match }) => <Redirect from="/" to="all" />}
+          />
 
-            </div>
-         );
-      } else {
-         return <AppLoader />;
-      }
-   }
+          {shelves.map(shelf => (
+            <Route
+              path={`/${shelf}`}
+              key={shelf}
+              render={({ match }) => (
+                <section>
+                  <h2>{shelf}</h2>
+                  <Shelf books={data} match={match} />
+                </section>
+              )}
+            />
+          ))}
+
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 }
 
 export default App;

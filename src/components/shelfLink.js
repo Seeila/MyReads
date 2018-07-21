@@ -3,26 +3,25 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 class ShelfLinks extends Component {
-   static propTypes = {
-      shelves: PropTypes.array.isRequired,
-      shelvesName: PropTypes.array.isRequired
-   };
+  static propTypes = {
+    shelves: PropTypes.array.isRequired
+  };
 
-   render() {
-      const { shelves, shelvesName } = this.props;
+  render() {
+    const { shelves } = this.props;
 
-      return (
-         <div className="book-state-buttons">
-            <nav>
-               {shelves.map((shelf, index) => (
-                  <Link to={`/${shelf}`} className="shelf-button" key={shelf}>
-                     {shelvesName[index]}
-                  </Link>
-               ))}
-            </nav>
-         </div>
-      );
-   }
+    return (
+      <div className="book-state-buttons">
+        <nav>
+          {shelves.map((shelf, index) => (
+            <Link to={`/${shelf}`} className="shelf-button" key={shelf}>
+              {shelf}
+            </Link>
+          ))}
+        </nav>
+      </div>
+    );
+  }
 }
 
 export default ShelfLinks;
