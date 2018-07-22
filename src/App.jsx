@@ -1,10 +1,14 @@
 import React, { Component } from "react";
-import "./App.css";
 import { Route, Redirect } from "react-router-dom";
-import Header from "./components/header";
-import ShelfLinks from "./components/shelfLink";
-import Footer from "./components/footer";
-import Shelf from "./components/shelf";
+import {ShelfTitle} from "./AppStyle";
+
+import './globalStyling';
+
+import Loader from "./components/appLoader/appLoader";
+import Header from "./components/header/header";
+import ShelfLinks from "./components/shelfLinks/shelfLink";
+import Footer from "./components/footer/footer";
+import Shelf from "./components/shelf/shelf";
 import * as BooksAPI from "./data/BooksAPI";
 
 class App extends Component {
@@ -20,20 +24,25 @@ class App extends Component {
     BooksAPI.getAll().then(data => this.setState({ data }));
   }
 
+
   render() {
     const { data } = this.state;
 
     if (!data.length) {
-      return <p>loading</p>;
+      return <Loader/>;
     }
 
     const shelves = ["all", ...new Set(data.map(book => book.shelf))];
 
-    return (
-      <div className="App">
-        <Header />
+    const shelfNames =  shelves.map(shelf => {
+        if(shelf === "currentlyReading") return 'reading';
+        if(shelf === "wantToRead") return 'whishlist';
+        return shelf;
+     });
 
-        <ShelfLinks data={data} shelves={shelves} />
+    return (
+      <React.Fragment>
+        <Header />
 
         <main>
           <Route
@@ -42,22 +51,25 @@ class App extends Component {
             render={({ match }) => <Redirect from="/" to="all" />}
           />
 
-          {shelves.map(shelf => (
+       {shelves.map((shelf, index) => (
             <Route
               path={`/${shelf}`}
               key={shelf}
               render={({ match }) => (
-                <section>
-                  <h2>{shelf}</h2>
+                <React.Fragment>
+                  <ShelfTitle>
+                     {shelfNames[index] === "all" ? "Your books" : shelfNames[index]}
+                  </ShelfTitle>
+                  <ShelfLinks data={data} shelves={shelves} shelfNames={shelfNames} />
                   <Shelf books={data} match={match} />
-                </section>
+                </React.Fragment>
               )}
             />
           ))}
 
         </main>
         <Footer />
-      </div>
+      </React.Fragment>
     );
   }
 }

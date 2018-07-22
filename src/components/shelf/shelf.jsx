@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Route, Redirect } from "react-router-dom";
-import Book from "./book";
-import BookPreview from "./book-preview";
+import { Route} from "react-router-dom";
+import Book from "../book";
+import BookPreview from "../bookPreview/book-preview";
+import {SectionStyled} from "./style";
 
 class Shelf extends Component {
   render() {
@@ -14,7 +15,7 @@ class Shelf extends Component {
         : books;
 
     return (
-      <div>
+      <SectionStyled>
         <Route
           path={`${match.url}/:id`}
           render={({ match }, props) => (
@@ -31,7 +32,7 @@ class Shelf extends Component {
             ))
           }
         />
-      </div>
+ </SectionStyled>
     );
   }
 }

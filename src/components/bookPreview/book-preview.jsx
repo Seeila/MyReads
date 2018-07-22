@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import TextTruncate from 'react-text-truncate';
 import PropTypes from "prop-types";
+import {ArticleStyled, BookThumbnail, BookTitle, BookAuthors, BookDescription, ShelfButton} from "./style";
 
 class BookPreview extends Component {
   static propTypes = {
@@ -20,26 +22,20 @@ class BookPreview extends Component {
     });
 
     return (
-      <article
-        className="book"
-        style={{
-          backgroundImage: `url(${book.imageLinks.thumbnail})`
-        }}
-      >
+      <ArticleStyled{...this.props}>
         <Link to={`${match.url}/${book.id}`}>
-          <img
+          <BookThumbnail
             src={book.imageLinks.smallThumbnail}
-            alt="{book.title}"
-            className="book-cover"
+            alt={book.title}
           />
-          <h3 className="book-title">{book.title}</h3>
-          <h4 className="book-authors">{authors}</h4>
-          <p className="book-description">{book.description}</p>
-          <button className="book-shelf" aria-label={book.shelf}>
+          <BookTitle>{book.title}</BookTitle>
+          <BookAuthors>{authors}</BookAuthors>
+         <BookDescription line={5} truncateText="…" text={book.description}/>
+          <ShelfButton aria-label={book.shelf}>
             X
-          </button>
+          </ShelfButton>
         </Link>
-      </article>
+      </ArticleStyled>
     );
   }
 }

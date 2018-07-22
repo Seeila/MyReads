@@ -8,9 +8,9 @@ class Shelf extends Component {
     console.log(book);
 
     return (
-      <div>
+      <React.Fragment>
         <h3>{book.title}</h3>
-      </div>
+      </React.Fragment>
     );
   }
 }
