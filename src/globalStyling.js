@@ -1,4 +1,4 @@
-import { injectGlobal } from 'styled-components';
+import { injectGlobal } from "styled-components";
 
 injectGlobal`
   @font-face {
@@ -53,7 +53,7 @@ injectGlobal`
  	display: block;
  }
  body {
- 	line-height: 1;
+ 	line-height: 1.3;
  }
  ol, ul {
  	list-style: none;
@@ -78,6 +78,7 @@ injectGlobal`
 
 body {
    font-family: var(--montserrat);
+   color: var(--grey);
 }
 
 main {

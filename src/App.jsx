@@ -1,88 +1,87 @@
 import React, { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
-import {ShelfTitle} from "./AppStyle";
+import { MainStyled } from "./AppStyle";
 
-import './globalStyling';
+import "./globalStyling";
 
 import Loader from "./components/appLoader/appLoader";
 import Header from "./components/header/header";
-import ShelfLinks from "./components/shelfLinks/shelfLink";
+
 import Footer from "./components/footer/footer";
 import Shelf from "./components/shelf/shelf";
 import * as BooksAPI from "./data/BooksAPI";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+   constructor(props, context) {
+      super(props, context);
 
-    this.state = {
-      data: []
-    };
-  }
+      this.state = {
+         data: []
+      };
+   }
 
-  componentDidMount() {
-    BooksAPI.getAll().then(data => this.setState({ data }));
-  }
+   componentDidMount() {
+      BooksAPI.getAll().then(data => this.setState({ data }));
+   }
 
-  changeShelfOnClick = (shelf, index) => {
+   changeShelfOnClick = (shelf, index) => {
+      let data = [...this.state.data];
+      let shelfName;
+      shelf === "all" ? (shelfName = "") : (shelfName = shelf);
+      data[index]["shelf"] = shelfName;
+      this.setState({ data });
+   };
 
-     let data = [...this.state.data];
-     let shelfName;
-     shelf === "all" ? shelfName = '' : shelfName = shelf;
-     data[index]['shelf'] = shelfName;
-     this.setState({data});
-  }
+   render() {
+      const { data } = this.state;
 
+      if (!data.length) {
+         return <Loader />;
+      }
 
-  render() {
-    const { data } = this.state;
+      const shelves = ["all", ...new Set(data.map(book => book.shelf))];
 
-    if (!data.length) {
-      return <Loader/>;
-    }
+      const shelfNames = shelves.map(shelf => {
+         if (shelf === "currentlyReading") return "reading";
+         if (shelf === "wantToRead") return "whishlist";
+         return shelf;
+      });
 
-    const shelves = ["all", ...new Set(data.map(book => book.shelf))];
+      return (
+         <React.Fragment>
+            <Header />
 
-    const shelfNames =  shelves.map(shelf => {
-        if(shelf === "currentlyReading") return 'reading';
-        if(shelf === "wantToRead") return 'whishlist';
-        return shelf;
-     });
+            <MainStyled>
+               <Route
+                  exact
+                  path="/"
+                  render={({ match }) => <Redirect from="/" to="all" />}
+               />
 
-    return (
-      <React.Fragment>
-        <Header />
-
-        <main>
-          <Route
-            exact
-            path="/"
-            render={({ match }) => <Redirect from="/" to="all" />}
-          />
-
-       {shelves.map((shelf, index) => (
-            <Route
-              path={`/${shelf}`}
-              key={shelf}
-              render={({ match }) => (
-                <React.Fragment>
-                  <ShelfTitle>
-                     {shelfNames[index] === "all" ? "Your books" : shelfNames[index]}
-                  </ShelfTitle>
-
-                  <ShelfLinks/>
-                  
-                  <Shelf books={data} match={match} shelves={shelves} shelfNames={shelfNames} changeShelfOnClick={this.changeShelfOnClick}/>
-                </React.Fragment>
-              )}
-            />
-          ))}
-
-        </main>
-        <Footer />
-      </React.Fragment>
-    );
-  }
+               {shelves.map((shelf, index) => (
+                  <Route
+                     path={`/${shelf}`}
+                     key={shelf}
+                     render={match => (
+                        <React.Fragment>
+                           <Shelf
+                              books={data}
+                              match={match.match}
+                              history={match.history}
+                              shelves={shelves}
+                              shelfNames={shelfNames}
+                              index={index}
+                              changeShelfOnClick={this.changeShelfOnClick}
+                           />
+                        </React.Fragment>
+                     )}
+                  />
+               ))}
+            </MainStyled>
+            <Footer />
+         </React.Fragment>
+      );
+   }
 }
 
 export default App;
