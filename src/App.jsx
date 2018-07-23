@@ -24,6 +24,15 @@ class App extends Component {
     BooksAPI.getAll().then(data => this.setState({ data }));
   }
 
+  changeShelfOnClick = (shelf, index) => {
+
+     let data = [...this.state.data];
+     let shelfName;
+     shelf === "all" ? shelfName = '' : shelfName = shelf;
+     data[index]['shelf'] = shelfName;
+     this.setState({data});
+  }
+
 
   render() {
     const { data } = this.state;
@@ -60,8 +69,10 @@ class App extends Component {
                   <ShelfTitle>
                      {shelfNames[index] === "all" ? "Your books" : shelfNames[index]}
                   </ShelfTitle>
-                  <ShelfLinks data={data} shelves={shelves} shelfNames={shelfNames} />
-                  <Shelf books={data} match={match} />
+
+                  <ShelfLinks/>
+                  
+                  <Shelf books={data} match={match} shelves={shelves} shelfNames={shelfNames} changeShelfOnClick={this.changeShelfOnClick}/>
                 </React.Fragment>
               )}
             />

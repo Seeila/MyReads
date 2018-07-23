@@ -6,7 +6,7 @@ import {SectionStyled} from "./style";
 
 class Shelf extends Component {
   render() {
-    const { books, match } = this.props;
+    const { books, match, shelves,shelfNames, changeShelfOnClick } = this.props;
     let shelf = match.url.length > 1 ? match.url.slice(1) : match.url;
 
     let booksOnShelve =
@@ -19,7 +19,7 @@ class Shelf extends Component {
         <Route
           path={`${match.url}/:id`}
           render={({ match }, props) => (
-            <Book books={books} match={match} {...props} />
+            <Book books={books} match={match} changeShelfOnClick={changeShelfOnClick} {...props}  />
           )}
         />
 
@@ -28,7 +28,7 @@ class Shelf extends Component {
           path={match.url}
           render={({ match }, props) =>
             booksOnShelve.map(book => (
-              <BookPreview book={book} match={match} {...props} key={book.id} />
+              <BookPreview book={book} books={books} match={match} shelves={shelves} shelfNames={shelfNames}  changeShelfOnClick={changeShelfOnClick}{...props} key={book.id} />
             ))
           }
         />

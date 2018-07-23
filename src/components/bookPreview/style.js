@@ -8,10 +8,12 @@ const ArticleStyled = styled.article`
    padding: 20px 20px 20px 110px;
 
    display:flex;
-   align-items:center;
+   flex-direction:column;
+   align-items:flex-start;
+   justify-content:center;
    position:relative;
 
-   background: url('${props => props.book.imageLinks.smallThumbnail}') no-repeat center center;
+   background:  linear-gradient(to right, rgba(202,48,88,0.8), rgba(255,153,72,0.8)), url('${props => props.book.imageLinks.smallThumbnail}') no-repeat center center;
    background-size:cover;
    color:#fff;
 
@@ -19,21 +21,21 @@ const ArticleStyled = styled.article`
          margin: 0;
    }
 
-   &:before {
-      content:'';
-      width:100%;
-      position:absolute;
-      top:0;
-      left:0;
-      bottom:0;
-      right:0;
-      background: linear-gradient(to right, rgba(202,48,88,0.8), rgba(255,153,72,0.8));
-      z-index:0;
+   &:nth-of-type(3n){
+      background: linear-gradient(to right, rgba(164,72,255,0.8), rgba(4,137,203,0.8)), url('${props => props.book.imageLinks.smallThumbnail}') no-repeat center center;
    }
-   &>*>* {
-      position:relative;
-      z-index: 1;
+
+   &:nth-of-type(2n){
+      background: linear-gradient(to right, rgba(255,153,72,0.8), rgba(164,72,255,0.8)), url('${props => props.book.imageLinks.smallThumbnail}') no-repeat center center;
    }
+
+   &:nth-of-type(4n){
+      background: linear-gradient(to right, rgba(4,137,203,0.8), rgba(202,48,88,0.8)), url('${props => props.book.imageLinks.smallThumbnail}') no-repeat center center;
+   }
+   &:nth-of-type(7n){
+      background: linear-gradient(to right, rgba(164,72,255,0.8), rgba(4,137,203,0.8)), url('${props => props.book.imageLinks.smallThumbnail}') no-repeat center center;
+   }
+
 `;
 
 const BookThumbnail = styled.img`

@@ -56,8 +56,6 @@ const StyledLink = styled(NavLink)`
       border:none;
 
    }
-
-
 `;
 
 const Nav = styled.nav`
@@ -66,6 +64,8 @@ const Nav = styled.nav`
    display:flex;
    flex-wrap:wrap;
    justify-content:space-around;
+   position:relative;
+   z-index:100;
 
    @media screen and (min-width:800px) {
       padding:20px 40px;

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import TextTruncate from 'react-text-truncate';
+import ShelfButtons from '../shelfBtn/shelfButtons';
 import PropTypes from "prop-types";
-import {ArticleStyled, BookThumbnail, BookTitle, BookAuthors, BookDescription, ShelfButton} from "./style";
+import {ArticleStyled, BookThumbnail, BookTitle, BookAuthors, BookDescription} from "./style";
 
 class BookPreview extends Component {
   static propTypes = {
@@ -10,7 +11,7 @@ class BookPreview extends Component {
   };
 
   render() {
-    const { book, match } = this.props;
+    const { books, book,match, shelves,shelfNames, changeShelfOnClick} = this.props;
 
     let authors = "";
     book.authors.forEach((author, index) => {
@@ -21,6 +22,12 @@ class BookPreview extends Component {
       }
     });
 
+    let bookIndex = books.findIndex(bookElement => {
+      if(bookElement.id === book.id) return bookElement;
+   });
+
+   console.log(bookIndex);
+
     return (
       <ArticleStyled{...this.props}>
         <Link to={`${match.url}/${book.id}`}>
@@ -30,11 +37,9 @@ class BookPreview extends Component {
           />
           <BookTitle>{book.title}</BookTitle>
           <BookAuthors>{authors}</BookAuthors>
-         <BookDescription line={5} truncateText="…" text={book.description}/>
-          <ShelfButton aria-label={book.shelf}>
-            X
-          </ShelfButton>
         </Link>
+        <BookDescription line={5} truncateText="…" text={book.description}/>
+        <ShelfButtons shelves={shelves} book={book} shelfNames={shelfNames} bookIndex={bookIndex} changeShelfOnClick={changeShelfOnClick}/>
       </ArticleStyled>
     );
   }

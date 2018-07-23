@@ -4,20 +4,13 @@ import {StyledLink, Nav} from "./style";
 import PropTypes from "prop-types";
 
 class ShelfLinks extends Component {
-  static propTypes = {
-    shelves: PropTypes.array.isRequired
-  };
-
   render() {
-    const { shelves, shelfNames } = this.props;
-
     return (
      <Nav>
-       {shelves.map((shelf, index) => (
-         <StyledLink to={`/${shelf}`} activeClassName="active" key={shelf}>
-           {shelfNames[index]}
-         </StyledLink>
-       ))}
+         <StyledLink to='/all' activeClassName="active" key="all">All</StyledLink>
+         <StyledLink to='/currentlyReading' activeClassName="active" key="currentlyReading">reading</StyledLink>
+         <StyledLink to='/wantToRead' activeClassName="active" key="wantToRead">whishlist</StyledLink>
+         <StyledLink to='/read'activeClassName="active" key="read">read</StyledLink>
      </Nav>
     );
   }
