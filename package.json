@@ -2,6 +2,7 @@
   "name": "myreads",
   "version": "0.1.0",
   "private": true,
+   "homepage": "https://seeila.github.io/MyReads/",
   "dependencies": {
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
@@ -14,8 +15,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "gh-pages": "^1.2.0"
   }
 }
