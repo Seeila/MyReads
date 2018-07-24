@@ -15,21 +15,33 @@ class ShelfButtons extends Component {
          : this.setState({ showChooseShelf: true });
    };
 
+
    render() {
       const {
          book,
          shelves,
          shelfNames,
          changeShelfOnClick,
+         removeFromShelfOnClick,
          bookIndex
       } = this.props;
 
       return (
          <React.Fragment>
             <ShelfNav {...this.state}>
+               <ChooseShelfButtons
+                  aria-label="none"
+                  onClick={() => removeFromShelfOnClick(bookIndex)}
+                  key="noShelf"
+                  {...this.props}
+               >
+                  <ShelfImage
+                        src={ require(`../../img/icons/none.svg`)}
+                        alt="none"
+                  />
+               </ChooseShelfButtons>
                {shelves.map(
                   (shelf, index) =>
-                     shelf !== "all" && (
                         <ChooseShelfButtons
                            shelf={shelfNames[index]}
                            aria-label={shelfNames[index]}
@@ -37,12 +49,11 @@ class ShelfButtons extends Component {
                            key={shelfNames[index]}
                            {...this.props}
                         >
-                           <ShelfImage
-                              src={require(`../../img/icons/${shelf}.svg`)}
+                        <ShelfImage
+                              src={ require(`../../img/icons/${shelf}.svg`)}
                               alt={book.shelf}
-                           />
+                        />
                         </ChooseShelfButtons>
-                     )
                )}
             </ShelfNav>
 
@@ -51,7 +62,7 @@ class ShelfButtons extends Component {
                onClick={this.shelfButtononClick}
             >
                <ShelfImage
-                  src={require(`../../img/icons/${book.shelf}.svg`)}
+                  src={book.shelf? require(`../../img/icons/${book.shelf}.svg`) : require(`../../img/icons/none.svg`)}
                   alt={book.shelf}
                />
             </ShelfButton>

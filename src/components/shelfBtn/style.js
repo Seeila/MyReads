@@ -58,7 +58,7 @@ const ChooseShelfButtons = styled(ShelfButton)`
    }
 
    &:after {
-      content:'${props => props.shelf}';
+      content:'${props => props.key}';
       position:absolute;
       top:-20px;
       left:0;

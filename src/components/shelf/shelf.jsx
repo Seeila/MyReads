@@ -14,14 +14,17 @@ class Shelf extends Component {
          shelves,
          shelfNames,
          index,
-         changeShelfOnClick
+         changeShelfOnClick,
+         removeFromShelfOnClick
       } = this.props;
-      let shelf = match.url.length > 1 ? match.url.slice(1) : match.url;
+      let url = match.url.length > 1 ? match.url.slice(1) : match.url;
 
       let booksOnShelve =
-         shelf !== "all" && shelf !== "/"
-            ? books.filter(book => book.shelf === shelf)
+         url !== "/"
+            ? books.filter(book => book.shelf === url)
             : books;
+
+      let matchUrl = match.url.length > 1 ? match.url : "/#";
 
 
       return (
@@ -33,7 +36,6 @@ class Shelf extends Component {
                      books={books}
                      match={match}
                      history={history}
-                     changeShelfOnClick={changeShelfOnClick}
                      {...props}
                   />
                )}
@@ -45,7 +47,7 @@ class Shelf extends Component {
                render={({ match }, props) => (
                   <React.Fragment>
                      <ShelfTitle>
-                        {shelfNames[index] === "all"
+                        {match.url === "/"
                            ? "Your books"
                            : shelfNames[index]}
                      </ShelfTitle>
@@ -61,6 +63,7 @@ class Shelf extends Component {
                               shelves={shelves}
                               shelfNames={shelfNames}
                               changeShelfOnClick={changeShelfOnClick}
+                              removeFromShelfOnClick={removeFromShelfOnClick}
                               {...props}
                               key={book.id}
                            />

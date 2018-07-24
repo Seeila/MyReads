@@ -22,13 +22,13 @@ class Search extends Component {
 
    render() {
 
-      const { books, match, history, shelves, shelfNames, changeShelfOnClick } = this.props
+      const { books, match, history, shelves, shelfNames, changeShelfOnClick, removeFromShelfOnClick } = this.props
       const { query } = this.state
 
       let showingBooks;
       if (query) {
-         const match = new RegExp(escapeRegExp(query), 'i')
-         showingBooks = books.filter((book) => match.test(book.title) || match.test(book.authors))
+         const matchResults = new RegExp(escapeRegExp(query), 'i')
+         showingBooks = books.filter((book) => matchResults.test(book.title) || matchResults.test(book.authors)|| matchResults.test(book.categories))
       } else {
          showingBooks = books
       }
@@ -42,7 +42,7 @@ class Search extends Component {
                   <React.Fragment>
                      <CloseButton onClick={history.goBack} aria-label="close"><img src={CloseIcon} alt="close" /></CloseButton>
                      <ShelfTitle>Search</ShelfTitle>
-                     <SearchInput type="text" placeholder="Search book by title or author" value={query} onChange={event => this.updateQuery(event.target.value)} />
+                     <SearchInput type="text" placeholder="Search book by title, author or categories" value={query} onChange={event => this.updateQuery(event.target.value)} />
                      <GridSection>
                         {showingBooks.map(book => (
                            <BookPreview
@@ -53,6 +53,7 @@ class Search extends Component {
                               shelves={shelves}
                               shelfNames={shelfNames}
                               changeShelfOnClick={changeShelfOnClick}
+                              removeFromShelfOnClick={removeFromShelfOnClick}
                               key={book.id}
                            />
                         ))}
@@ -68,7 +69,6 @@ class Search extends Component {
                      books={books}
                      match={match}
                      history={history}
-                     changeShelfOnClick={changeShelfOnClick}
                      {...props}
                   />
                )}

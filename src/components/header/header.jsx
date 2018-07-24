@@ -4,6 +4,7 @@ import { StylingHeader, Logo, SearchIcon } from "./style";
 import Search from "../../img/icons/search.svg";
 
 class Header extends Component {
+
    render() {
       return (
          <StylingHeader>

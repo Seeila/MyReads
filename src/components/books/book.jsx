@@ -18,8 +18,9 @@ import star from "../../img/icons/star.svg";
 
 class Shelf extends Component {
    render() {
-      const { books, match, history } = this.props;
-      const book = books.find(el => el.id === match.params.id);
+      const { books, match, history} = this.props;
+      const book = books.find(el => el.shelf === match.params.id || el.id === match.params.id || el.id === match.params.id);
+
 
       let authors = mapArrays(book.authors, authors);
       let categories = book.categories

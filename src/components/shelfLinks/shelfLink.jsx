@@ -6,7 +6,7 @@ class ShelfLinks extends Component {
    render() {
       return (
          <Nav>
-            <StyledLink to="/all" activeClassName="active" key="all">
+            <StyledLink exact to="/" activeClassName="active" key="all">
                All
             </StyledLink>
             <StyledLink

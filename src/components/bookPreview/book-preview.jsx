@@ -22,7 +22,8 @@ class BookPreview extends Component {
          match,
          shelves,
          shelfNames,
-         changeShelfOnClick
+         changeShelfOnClick,
+         removeFromShelfOnClick
       } = this.props;
 
       let authors = "";
@@ -42,7 +43,7 @@ class BookPreview extends Component {
 
       return (
          <ArticleStyled {...this.props}>
-            <Link to={`${match.url}/${book.id}`}>
+            <Link to={match.url !== '/' ? `${match.url}/${book.id}` : `/${book.id}`}>
                <BookThumbnail
                   src={book.imageLinks.smallThumbnail}
                   alt={book.title}
@@ -61,6 +62,7 @@ class BookPreview extends Component {
                shelfNames={shelfNames}
                bookIndex={bookIndex}
                changeShelfOnClick={changeShelfOnClick}
+               removeFromShelfOnClick={removeFromShelfOnClick}
             />
          </ArticleStyled>
       );
