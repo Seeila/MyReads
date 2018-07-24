@@ -2,8 +2,9 @@
   "name": "myreads",
   "version": "0.1.0",
   "private": true,
-   "homepage": "https://seeila.github.io/MyReads/",
+  "homepage": "https://seeila.github.io/MyReads/",
   "dependencies": {
+    "escape-string-regexp": "^1.0.5",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",

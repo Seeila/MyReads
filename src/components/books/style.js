@@ -146,6 +146,7 @@ const BackButton = styled.button`
    margin: 0 0 20px;
    color: var(--grey);
    font-size: 1.5em;
+   display:block;
 `;
 
 export { BannerDiv };

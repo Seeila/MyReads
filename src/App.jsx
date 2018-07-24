@@ -6,7 +6,7 @@ import "./globalStyling";
 
 import Loader from "./components/appLoader/appLoader";
 import Header from "./components/header/header";
-
+import Search from "./components/search/search";
 import Footer from "./components/footer/footer";
 import Shelf from "./components/shelf/shelf";
 import * as BooksAPI from "./data/BooksAPI";
@@ -77,6 +77,12 @@ class App extends Component {
                      )}
                   />
                ))}
+
+               <Route path='/search' render={match => <Search history={match.history} books={data}
+               match={match.match}
+               shelves={shelves}
+               shelfNames={shelfNames}
+               changeShelfOnClick={this.changeShelfOnClick}/>}/>
             </MainStyled>
             <Footer />
          </React.Fragment>
