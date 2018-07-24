@@ -32,7 +32,7 @@ class App extends Component {
       this.setState({ data });
    };
 
-   removeFromShelfOnClick = (index) => {
+   removeFromShelfOnClick = index => {
       let data = [...this.state.data];
       delete data[index]["shelf"];
       this.setState({ data });
@@ -45,7 +45,9 @@ class App extends Component {
          return <Loader />;
       }
 
-      const shelves = [...new Set(data.map(book => book.shelf))].filter(el => el !== undefined);
+      const shelves = [...new Set(data.map(book => book.shelf))].filter(
+         el => el !== undefined
+      );
 
       const shelfNames = shelves.map(shelf => {
          if (shelf === "currentlyReading") return "reading";
@@ -55,32 +57,14 @@ class App extends Component {
 
       return (
          <React.Fragment>
-            <Header/>
+            <Header />
 
             <MainStyled>
                <Switch>
-               <Route
-                  exact path="/"
-                  key="all"
-                  render={match => (
-                     <React.Fragment>
-                        <Shelf
-                           books={data}
-                           match={match.match}
-                           history={match.history}
-                           shelves={shelves}
-                           shelfNames={shelfNames}
-                           changeShelfOnClick={this.changeShelfOnClick}
-                           removeFromShelfOnClick={this.removeFromShelfOnClick}
-                        />
-                     </React.Fragment>
-                  )}
-               />
-
-               {shelves.map((shelf, index) => (
                   <Route
-                     path={`/${shelf}`}
-                     key={shelf}
+                     exact
+                     path="/"
+                     key="all"
                      render={match => (
                         <React.Fragment>
                            <Shelf
@@ -89,36 +73,63 @@ class App extends Component {
                               history={match.history}
                               shelves={shelves}
                               shelfNames={shelfNames}
-                              index={index}
                               changeShelfOnClick={this.changeShelfOnClick}
-                              removeFromShelfOnClick={this.removeFromShelfOnClick}
+                              removeFromShelfOnClick={
+                                 this.removeFromShelfOnClick
+                              }
                            />
                         </React.Fragment>
                      )}
                   />
-               ))}
-               <Route path='/search' render={match =>
-                  <Search history={match.history} books={data}
-                     match={match.match}
-                     shelves={shelves}
-                     shelfNames={shelfNames}
-                     changeShelfOnClick={this.changeShelfOnClick}
-                     removeFromShelfOnClick={this.removeFromShelfOnClick}/>}
+
+                  {shelves.map((shelf, index) => (
+                     <Route
+                        path={`/${shelf}`}
+                        key={shelf}
+                        render={match => (
+                           <React.Fragment>
+                              <Shelf
+                                 books={data}
+                                 match={match.match}
+                                 history={match.history}
+                                 shelves={shelves}
+                                 shelfNames={shelfNames}
+                                 index={index}
+                                 changeShelfOnClick={this.changeShelfOnClick}
+                                 removeFromShelfOnClick={
+                                    this.removeFromShelfOnClick
+                                 }
+                              />
+                           </React.Fragment>
+                        )}
+                     />
+                  ))}
+                  <Route
+                     path="/search"
+                     render={match => (
+                        <Search
+                           history={match.history}
+                           books={data}
+                           match={match.match}
+                           shelves={shelves}
+                           shelfNames={shelfNames}
+                           changeShelfOnClick={this.changeShelfOnClick}
+                           removeFromShelfOnClick={this.removeFromShelfOnClick}
+                        />
+                     )}
                   />
 
-
-               <Route
-                  path={`/:id`}
-                  render={match => (
-                     <Book
-                        books={data}
-                        match={match.match}
-                        history={match.history}
-                     />
-                  )}
-               />
-
-         </Switch>
+                  <Route
+                     path={`/:id`}
+                     render={match => (
+                        <Book
+                           books={data}
+                           match={match.match}
+                           history={match.history}
+                        />
+                     )}
+                  />
+               </Switch>
             </MainStyled>
             <Footer />
          </React.Fragment>

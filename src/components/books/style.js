@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import TextTruncate from "react-text-truncate";
 
 const BannerDiv = styled.div`
    width: 100%;
@@ -146,7 +145,7 @@ const BackButton = styled.button`
    margin: 0 0 20px;
    color: var(--grey);
    font-size: 1.5em;
-   display:block;
+   display: block;
 `;
 
 export { BannerDiv };

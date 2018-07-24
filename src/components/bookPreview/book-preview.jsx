@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import ShelfButtons from "../shelfBtn/shelfButtons";
 import PropTypes from "prop-types";
+
+import ShelfButtons from "../shelfBtn/shelfButtons";
 import {
    ArticleStyled,
    BookThumbnail,
@@ -12,8 +13,14 @@ import {
 
 class BookPreview extends Component {
    static propTypes = {
-      book: PropTypes.object.isRequired
-   };
+      books: PropTypes.array.isRequired,
+      book: PropTypes.object.isRequired,
+      match: PropTypes.object.isRequired,
+      shelves: PropTypes.array.isRequired,
+      shelfNames: PropTypes.array.isRequired,
+      changeShelfOnClick: PropTypes.func.isRequired,
+      removeFromShelfOnClick: PropTypes.func.isRequired
+   }
 
    render() {
       const {

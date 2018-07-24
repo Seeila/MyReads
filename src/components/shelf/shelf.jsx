@@ -1,11 +1,24 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
+import PropTypes from 'prop-types';
 import ShelfLinks from "../shelfLinks/shelfLink";
 import Book from "../books/book";
 import BookPreview from "../bookPreview/book-preview";
 import { ShelfTitle, GridSection } from "./style";
 
 class Shelf extends Component {
+
+   static propTypes = {
+      books: PropTypes.array.isRequired,
+      match: PropTypes.object.isRequired,
+      history: PropTypes.object.isRequired,
+      shelves: PropTypes.array.isRequired,
+      shelfNames: PropTypes.array.isRequired,
+      index: PropTypes.number,
+      changeShelfOnClick: PropTypes.func.isRequired,
+      removeFromShelfOnClick: PropTypes.func.isRequired
+   }
+
    render() {
       const {
          books,
@@ -23,9 +36,6 @@ class Shelf extends Component {
          url !== "/"
             ? books.filter(book => book.shelf === url)
             : books;
-
-      let matchUrl = match.url.length > 1 ? match.url : "/#";
-
 
       return (
          <React.Fragment>

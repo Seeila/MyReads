@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
+import PropTypes from 'prop-types';
 import BookPreview from "../bookPreview/book-preview";
 import Book from "../books/book";
 import escapeRegExp from 'escape-string-regexp'
@@ -8,6 +9,15 @@ import {GridSection, ShelfTitle} from "../shelf/style";
 import {SearchInput, CloseButton} from "./style";
 
 class Search extends Component {
+   static propTypes = {
+      books: PropTypes.array.isRequired,
+      match: PropTypes.object.isRequired,
+      history: PropTypes.object.isRequired,
+      shelves: PropTypes.array.isRequired,
+      shelfNames: PropTypes.array.isRequired,
+      changeShelfOnClick: PropTypes.func.isRequired,
+      removeFromShelfOnClick: PropTypes.func.isRequired
+   }
 
    state={
       query: ''

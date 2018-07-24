@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { StyledLink, Nav } from "./style";
-import PropTypes from "prop-types";
 
 class ShelfLinks extends Component {
    render() {
       return (
          <Nav>
+            {/*not mapped from shelf because order depends of apparition in data array*/}
             <StyledLink exact to="/" activeClassName="active" key="all">
                All
             </StyledLink>

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import {
    BannerDiv,
    BookHeader,
@@ -17,15 +18,19 @@ import {
 import star from "../../img/icons/star.svg";
 
 class Shelf extends Component {
+   static propTypes = {
+      books: PropTypes.array.isRequired,
+      match: PropTypes.object.isRequired,
+      history: PropTypes.object.isRequired
+   };
    render() {
-      const { books, match, history} = this.props;
-      const book = books.find(el => el.shelf === match.params.id || el.id === match.params.id || el.id === match.params.id);
-
-
-      let authors = mapArrays(book.authors, authors);
-      let categories = book.categories
-         ? mapArrays(book.categories, categories)
-         : "";
+      const { books, match, history } = this.props;
+      const book = books.find(
+         el =>
+            el.shelf === match.params.id ||
+            el.id === match.params.id ||
+            el.id === match.params.id
+      );
 
       function mapArrays(arr, name) {
          let returnedElement = "";
@@ -40,6 +45,11 @@ class Shelf extends Component {
          });
          return returnedElement;
       }
+
+      let authors = mapArrays(book.authors, authors);
+      let categories = book.categories
+         ? mapArrays(book.categories, categories)
+         : "";
 
       return (
          <React.Fragment>
