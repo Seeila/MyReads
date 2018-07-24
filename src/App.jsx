@@ -45,7 +45,7 @@ class App extends Component {
          return <Loader />;
       }
 
-      const shelves = [...new Set(data.map(book => book.shelf))].filter(
+      const shelves = ["currentlyReading", "wantToRead", "read"].filter(
          el => el !== undefined
       );
 
@@ -120,6 +120,7 @@ class App extends Component {
                   />
 
                   <Route
+                     exact
                      path={`/:id`}
                      render={match => (
                         <Book

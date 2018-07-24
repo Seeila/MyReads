@@ -32,6 +32,10 @@ class Shelf extends Component {
             el.id === match.params.id
       );
 
+      if (!book) {
+         return <p>This page doesn't exist</p>;
+      }
+
       function mapArrays(arr, name) {
          let returnedElement = "";
          arr.forEach((element, index) => {

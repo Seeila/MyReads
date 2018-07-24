@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import NotFound from "../notFound/notFound.jsx";
 import ShelfLinks from "../shelfLinks/shelfLink";
 import Book from "../books/book";
 import BookPreview from "../bookPreview/book-preview";
 import { ShelfTitle, GridSection } from "./style";
 
 class Shelf extends Component {
-
    static propTypes = {
       books: PropTypes.array.isRequired,
       match: PropTypes.object.isRequired,
@@ -17,7 +17,7 @@ class Shelf extends Component {
       index: PropTypes.number,
       changeShelfOnClick: PropTypes.func.isRequired,
       removeFromShelfOnClick: PropTypes.func.isRequired
-   }
+   };
 
    render() {
       const {
@@ -33,10 +33,20 @@ class Shelf extends Component {
       let url = match.url.length > 1 ? match.url.slice(1) : match.url;
 
       let booksOnShelve =
-         url !== "/"
-            ? books.filter(book => book.shelf === url)
-            : books;
+         url !== "/" ? books.filter(book => book.shelf === url) : books;
 
+      if (!booksOnShelve.length) {
+         return (
+            <React.Fragment>
+               <ShelfTitle>
+                  {match.url === "/" ? "Your books" : shelfNames[index]}
+               </ShelfTitle>
+
+               <ShelfLinks />
+               <NotFound />
+            </React.Fragment>
+         );
+      }
       return (
          <React.Fragment>
             <Route
@@ -57,9 +67,7 @@ class Shelf extends Component {
                render={({ match }, props) => (
                   <React.Fragment>
                      <ShelfTitle>
-                        {match.url === "/"
-                           ? "Your books"
-                           : shelfNames[index]}
+                        {match.url === "/" ? "Your books" : shelfNames[index]}
                      </ShelfTitle>
 
                      <ShelfLinks />
