@@ -6,7 +6,6 @@ import "./globalStyling";
 
 import Loader from "./components/appLoader/appLoader";
 import Header from "./components/header/header";
-import Book from "./components/books/book";
 import Search from "./components/search/search";
 import Footer from "./components/footer/footer";
 import Shelf from "./components/shelf/shelf";
@@ -17,29 +16,34 @@ class App extends Component {
       super(props, match);
 
       this.state = {
-         data: []
+         data: [],
+         showingBooks: []
       };
    }
 
    componentDidMount() {
-      BooksAPI.getAll().then(data => this.setState({ data }));
+      BooksAPI.getAll().then(res => {
+         this.setState({ data: res });
+      });
    }
 
-   changeShelfOnClick = (shelf, index) => {
-      let data = [...this.state.data];
-      let shelfName = shelf;
-      data[index]["shelf"] = shelfName;
-      this.setState({ data });
+   changeShelfOnClick = (book, shelf) => {
+      BooksAPI.update(book, shelf);
+      BooksAPI.getAll().then(books => {
+         this.setState(prevState => ({
+            data: books
+         }));
+      });
    };
 
-   removeFromShelfOnClick = index => {
-      let data = [...this.state.data];
-      delete data[index]["shelf"];
-      this.setState({ data });
+   updateSearchResults = query => {
+      BooksAPI.search(query).then(data =>
+         this.setState(state => ({ showingBooks: data }))
+      );
    };
 
    render() {
-      const { data } = this.state;
+      const { data, showingBooks } = this.state;
 
       if (!data.length) {
          return <Loader />;
@@ -66,19 +70,14 @@ class App extends Component {
                      path="/"
                      key="all"
                      render={match => (
-                        <React.Fragment>
-                           <Shelf
-                              books={data}
-                              match={match.match}
-                              history={match.history}
-                              shelves={shelves}
-                              shelfNames={shelfNames}
-                              changeShelfOnClick={this.changeShelfOnClick}
-                              removeFromShelfOnClick={
-                                 this.removeFromShelfOnClick
-                              }
-                           />
-                        </React.Fragment>
+                        <Shelf
+                           books={data}
+                           match={match.match}
+                           history={match.history}
+                           shelves={shelves}
+                           shelfNames={shelfNames}
+                           changeShelfOnClick={this.changeShelfOnClick}
+                        />
                      )}
                   />
 
@@ -87,20 +86,15 @@ class App extends Component {
                         path={`/${shelf}`}
                         key={shelf}
                         render={match => (
-                           <React.Fragment>
-                              <Shelf
-                                 books={data}
-                                 match={match.match}
-                                 history={match.history}
-                                 shelves={shelves}
-                                 shelfNames={shelfNames}
-                                 index={index}
-                                 changeShelfOnClick={this.changeShelfOnClick}
-                                 removeFromShelfOnClick={
-                                    this.removeFromShelfOnClick
-                                 }
-                              />
-                           </React.Fragment>
+                           <Shelf
+                              books={data}
+                              match={match.match}
+                              history={match.history}
+                              shelves={shelves}
+                              shelfNames={shelfNames}
+                              index={index}
+                              changeShelfOnClick={this.changeShelfOnClick}
+                           />
                         )}
                      />
                   ))}
@@ -114,19 +108,8 @@ class App extends Component {
                            shelves={shelves}
                            shelfNames={shelfNames}
                            changeShelfOnClick={this.changeShelfOnClick}
-                           removeFromShelfOnClick={this.removeFromShelfOnClick}
-                        />
-                     )}
-                  />
-
-                  <Route
-                     exact
-                     path={`/:id`}
-                     render={match => (
-                        <Book
-                           books={data}
-                           match={match.match}
-                           history={match.history}
+                           updateSearchResults={this.updateSearchResults}
+                           showingBooks={showingBooks}
                         />
                      )}
                   />

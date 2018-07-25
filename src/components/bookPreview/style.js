@@ -14,7 +14,7 @@ const ArticleStyled = styled.article`
    position:relative;
 
    background:  linear-gradient(to right, rgba(202,48,88,0.8), rgba(255,153,72,0.8)), url('${props =>
-      props.book.imageLinks.smallThumbnail}') no-repeat center center;
+      props.thumb}') no-repeat center center;
    background-size:cover;
    color:#fff;
 
@@ -24,24 +24,24 @@ const ArticleStyled = styled.article`
 
    &:nth-of-type(3n){
       background: linear-gradient(to right, rgba(164,72,255,0.8), rgba(4,137,203,0.8)), url('${props =>
-         props.book.imageLinks.smallThumbnail}') no-repeat center center;
+         props.thumb}') no-repeat center center;
          background-size:cover;
    }
 
    &:nth-of-type(2n){
       background: linear-gradient(to right, rgba(255,153,72,0.8), rgba(164,72,255,0.8)), url('${props =>
-         props.book.imageLinks.smallThumbnail}') no-repeat center center;
+         props.thumb}') no-repeat center center;
          background-size:cover;
    }
 
    &:nth-of-type(4n){
       background: linear-gradient(to right, rgba(4,137,203,0.8), rgba(202,48,88,0.8)), url('${props =>
-         props.book.imageLinks.smallThumbnail}') no-repeat center center;
+         props.thumb}') no-repeat center center;
          background-size:cover;
    }
    &:nth-of-type(7n){
       background: linear-gradient(to right, rgba(164,72,255,0.8), rgba(4,137,203,0.8)), url('${props =>
-         props.book.imageLinks.smallThumbnail}') no-repeat center center;
+         props.thumb}') no-repeat center center;
          background-size:cover;
    }
 

@@ -12,11 +12,7 @@ class ShelfButtons extends Component {
 
    static propTypes = {
       book: PropTypes.object.isRequired,
-      shelves: PropTypes.array.isRequired,
-      shelfNames: PropTypes.array.isRequired,
-      bookIndex: PropTypes.number,
-      changeShelfOnClick: PropTypes.func.isRequired,
-      removeFromShelfOnClick: PropTypes.func.isRequired
+      changeShelfOnClick: PropTypes.func.isRequired
    };
 
    shelfButtononClick = () => {
@@ -26,21 +22,14 @@ class ShelfButtons extends Component {
    };
 
    render() {
-      const {
-         book,
-         shelves,
-         shelfNames,
-         changeShelfOnClick,
-         removeFromShelfOnClick,
-         bookIndex
-      } = this.props;
+      const { book, changeShelfOnClick } = this.props;
 
       return (
          <React.Fragment>
             <ShelfNav {...this.state}>
                <ChooseShelfButtons
                   aria-label="none"
-                  onClick={() => removeFromShelfOnClick(bookIndex)}
+                  onClick={() => changeShelfOnClick(book, "none")}
                   key="noShelf"
                   {...this.props}
                >
@@ -49,20 +38,44 @@ class ShelfButtons extends Component {
                      alt="none"
                   />
                </ChooseShelfButtons>
-               {shelves.map((shelf, index) => (
-                  <ChooseShelfButtons
-                     shelf={shelfNames[index]}
-                     aria-label={shelfNames[index]}
-                     onClick={() => changeShelfOnClick(shelf, bookIndex)}
-                     key={shelfNames[index]}
-                     {...this.props}
-                  >
-                     <ShelfImage
-                        src={require(`../../img/icons/${shelf}.svg`)}
-                        alt={book.shelf}
-                     />
-                  </ChooseShelfButtons>
-               ))}
+
+               <ChooseShelfButtons
+                  aria-label="Reading"
+                  onClick={event =>
+                     changeShelfOnClick(book, "currentlyReading")
+                  }
+                  key="currentlyReading"
+                  {...this.props}
+               >
+                  <ShelfImage
+                     src={require(`../../img/icons/currentlyReading.svg`)}
+                     alt="Reading"
+                  />
+               </ChooseShelfButtons>
+
+               <ChooseShelfButtons
+                  aria-label="Whishlist"
+                  onClick={event => changeShelfOnClick(book, "wantToRead")}
+                  key="wantToRead"
+                  {...this.props}
+               >
+                  <ShelfImage
+                     src={require(`../../img/icons/wantToRead.svg`)}
+                     alt="Reading"
+                  />
+               </ChooseShelfButtons>
+
+               <ChooseShelfButtons
+                  aria-label="Read"
+                  onClick={event => changeShelfOnClick(book, "read")}
+                  key="read"
+                  {...this.props}
+               >
+                  <ShelfImage
+                     src={require(`../../img/icons/read.svg`)}
+                     alt="Reading"
+                  />
+               </ChooseShelfButtons>
             </ShelfNav>
 
             <ShelfButton

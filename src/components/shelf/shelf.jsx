@@ -3,7 +3,6 @@ import { Route } from "react-router-dom";
 import PropTypes from "prop-types";
 import NotFound from "../notFound/notFound.jsx";
 import ShelfLinks from "../shelfLinks/shelfLink";
-import Book from "../books/book";
 import BookPreview from "../bookPreview/book-preview";
 import { ShelfTitle, GridSection } from "./style";
 
@@ -15,20 +14,17 @@ class Shelf extends Component {
       shelves: PropTypes.array.isRequired,
       shelfNames: PropTypes.array.isRequired,
       index: PropTypes.number,
-      changeShelfOnClick: PropTypes.func.isRequired,
-      removeFromShelfOnClick: PropTypes.func.isRequired
+      changeShelfOnClick: PropTypes.func.isRequired
    };
 
    render() {
       const {
          books,
          match,
-         history,
          shelves,
          shelfNames,
          index,
-         changeShelfOnClick,
-         removeFromShelfOnClick
+         changeShelfOnClick
       } = this.props;
       let url = match.url.length > 1 ? match.url.slice(1) : match.url;
 
@@ -48,49 +44,35 @@ class Shelf extends Component {
          );
       }
       return (
-         <React.Fragment>
-            <Route
-               path={`${match.url}/:id`}
-               render={({ match }, props) => (
-                  <Book
-                     books={books}
-                     match={match}
-                     history={history}
-                     {...props}
-                  />
-               )}
-            />
 
-            <Route
-               exact
-               path={match.url}
-               render={({ match }, props) => (
-                  <React.Fragment>
-                     <ShelfTitle>
-                        {match.url === "/" ? "Your books" : shelfNames[index]}
-                     </ShelfTitle>
+         <Route
+            exact
+            path={match.url}
+            render={({ match }, props) => (
+               <React.Fragment>
+                  <ShelfTitle>
+                     {match.url === "/" ? "Your books" : shelfNames[index]}
+                  </ShelfTitle>
 
-                     <ShelfLinks />
-                     <GridSection>
-                        {booksOnShelve.map(book => (
-                           <BookPreview
-                              book={book}
-                              books={books}
-                              match={match}
-                              history={match.history}
-                              shelves={shelves}
-                              shelfNames={shelfNames}
-                              changeShelfOnClick={changeShelfOnClick}
-                              removeFromShelfOnClick={removeFromShelfOnClick}
-                              {...props}
-                              key={book.id}
-                           />
-                        ))}
-                     </GridSection>
-                  </React.Fragment>
-               )}
-            />
-         </React.Fragment>
+                  <ShelfLinks />
+                  <GridSection>
+                     {booksOnShelve.map(book => (
+                        <BookPreview
+                           book={book}
+                           books={books}
+                           match={match}
+                           shelves={shelves}
+                           shelfNames={shelfNames}
+                           changeShelfOnClick={changeShelfOnClick}
+                           {...props}
+                           key={book.id}
+                        />
+                     ))}
+                  </GridSection>
+               </React.Fragment>
+            )}
+         />
+
       );
    }
 }
