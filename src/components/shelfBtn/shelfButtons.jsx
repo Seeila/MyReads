@@ -31,7 +31,7 @@ class ShelfButtons extends Component {
    };
 
    render() {
-      const { book, changeShelfOnClick } = this.props;
+      const { book } = this.props;
 
       return (
          <React.Fragment>

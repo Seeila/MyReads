@@ -29,7 +29,9 @@ class Shelf extends Component {
       let url = match.url.length > 1 ? match.url.slice(1) : match.url;
 
       let booksOnShelve =
-         url !== "/" ? books.filter(book => book.shelf === url) : books;
+         url !== "/"
+            ? books.filter(book => book.shelf === url)
+            : books.filter(book => book.shelf !== "none");
 
       if (!booksOnShelve.length) {
          return (
@@ -44,7 +46,6 @@ class Shelf extends Component {
          );
       }
       return (
-
          <Route
             exact
             path={match.url}
@@ -72,7 +73,6 @@ class Shelf extends Component {
                </React.Fragment>
             )}
          />
-
       );
    }
 }

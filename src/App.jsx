@@ -28,35 +28,29 @@ class App extends Component {
    }
 
    changeShelfOnClick = (book, shelf) => {
-      BooksAPI.update(book, shelf);
-      BooksAPI.getAll()
-         .then(books => {
-            this.setState({ data: books });
-         })
-         .then(books => this.updateSchelves(shelf));
+      BooksAPI.update(book, shelf).then(() => {
+         book.shelf = shelf;
+         this.setState(state => ({
+            data: state.data.filter(el => el.id !== book.id).concat(book)
+         }));
+      });
    };
 
    updateSearchResults = query => {
-      let returnedBooks;
-      BooksAPI.search(query).then(results => {
-         this.setState({ showingBooks: results });
-         this.updateSchelves();
-      });
-   };
-
-   updateSchelves = shelf => {
-      let newState = [...this.state.showingBooks];
-      newState.map((book, index) => {
-         this.state.data.map(el => {
-            if (book.id === el.id) {
-               console.log(shelf);
-               book.shelf = shelf === "none" ? undefined : el.shelf;
-            } else {
-               book.shelf = book.shelf;
+      BooksAPI.search(query, 30).then(books => {
+         if (!!books) {
+            if (books.length > 0) {
+               const results = books.map(book => {
+                  const existingBook = this.state.data.find(
+                     el => el.id === book.id
+                  );
+                  book.shelf = !!existingBook ? existingBook.shelf : "none";
+                  return book;
+               });
+               this.setState({ showingBooks: results });
             }
-         });
+         }
       });
-      this.setState(state => ({ showingBooks: newState }));
    };
 
    render() {

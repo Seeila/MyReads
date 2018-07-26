@@ -13,25 +13,15 @@ import {
 
 class BookPreview extends Component {
    static propTypes = {
-      books: PropTypes.array.isRequired,
       book: PropTypes.object.isRequired,
-      match: PropTypes.object.isRequired,
-      shelves: PropTypes.array.isRequired,
-      shelfNames: PropTypes.array.isRequired,
       changeShelfOnClick: PropTypes.func.isRequired
-   }
+   };
 
    render() {
-      const {
-         books,
-         book,
-         shelves,
-         shelfNames,
-         changeShelfOnClick
-      } = this.props;
+      const { book, changeShelfOnClick } = this.props;
 
       let authors = "";
-      if(book.authors) {
+      if (book.authors) {
          book.authors.forEach((author, index) => {
             if (book.authors.length > 1) {
                index === 0
@@ -45,21 +35,13 @@ class BookPreview extends Component {
 
       let thumb = NoThumbs;
 
-      if(book.imageLinks && book.imageLinks.smallThumbnail) {
+      if (book.imageLinks && book.imageLinks.smallThumbnail) {
          thumb = book.imageLinks.smallThumbnail;
       }
 
-      let bookIndex = books.findIndex(bookElement => {
-         return bookElement.id === book.id;
-      });
-
       return (
          <ArticleStyled thumb={thumb} {...this.props}>
-
-            <BookThumbnail
-               src={thumb}
-               alt={book.title}
-            />
+            <BookThumbnail src={thumb} alt={book.title} />
 
             <BookTitle>{book.title}</BookTitle>
             <BookAuthors>{authors}</BookAuthors>
@@ -68,10 +50,7 @@ class BookPreview extends Component {
                truncateText="…"
                text={book.description}
             />
-            <ShelfButtons
-               book={book}
-               changeShelfOnClick={changeShelfOnClick}
-            />
+            <ShelfButtons book={book} changeShelfOnClick={changeShelfOnClick} />
          </ArticleStyled>
       );
    }

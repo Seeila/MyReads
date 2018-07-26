@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Route } from "react-router-dom";
 import BookPreview from "../bookPreview/book-preview";
 import CloseIcon from "../../img/icons/close.svg";
 import { GridSection, ShelfTitle } from "../shelf/style";
 import { SearchInput, CloseButton } from "./style";
+import { Paragraph } from "../notFound/style";
 
 class Search extends Component {
    static propTypes = {
-      books: PropTypes.array.isRequired,
       match: PropTypes.object.isRequired,
       history: PropTypes.object.isRequired,
       shelves: PropTypes.array.isRequired,
@@ -23,13 +22,12 @@ class Search extends Component {
    }
 
    updateQuery = query => {
-      this.setState({ query: query.trim() });
+      this.setState({ query: query });
       if (query.length > 0) this.props.updateSearchResults(query);
    };
 
    render() {
       const {
-         books,
          match,
          history,
          shelves,
@@ -52,8 +50,13 @@ class Search extends Component {
                value={query}
                onChange={event => this.updateQuery(event.target.value)}
             />
+            {!query.length && (
+               <Paragraph>
+                  There are currently no ressults to your research
+               </Paragraph>
+            )}
 
-            {showingBooks.length && (
+            {query.length && (
                <GridSection>
                   {showingBooks.map(book => (
                      <BookPreview
