@@ -39,8 +39,6 @@ class Search extends Component {
       } = this.props;
       const { query } = this.state;
 
-      console.log(showingBooks);
-
       return (
          <React.Fragment>
             <CloseButton onClick={history.goBack} aria-label="close">

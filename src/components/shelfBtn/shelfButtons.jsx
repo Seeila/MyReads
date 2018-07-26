@@ -6,7 +6,10 @@ class ShelfButtons extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         showChooseShelf: false
+         showChooseShelf: false,
+         buttonImgSrc: this.props.book.shelf
+            ? require(`../../img/icons/${this.props.book.shelf}.svg`)
+            : require("../../img/icons/none.svg")
       };
    }
 
@@ -21,6 +24,12 @@ class ShelfButtons extends Component {
          : this.setState({ showChooseShelf: true });
    };
 
+   updateShelf = (book, shelf) => {
+      this.setState({ showChooseShelf: false });
+      this.props.changeShelfOnClick(book, shelf);
+      this.setState({ buttonImgSrc: require(`../../img/icons/${shelf}.svg`) });
+   };
+
    render() {
       const { book, changeShelfOnClick } = this.props;
 
@@ -29,7 +38,7 @@ class ShelfButtons extends Component {
             <ShelfNav {...this.state}>
                <ChooseShelfButtons
                   aria-label="none"
-                  onClick={() => changeShelfOnClick(book, "none")}
+                  onClick={() => this.updateShelf(book, "none")}
                   key="noShelf"
                   {...this.props}
                >
@@ -41,9 +50,7 @@ class ShelfButtons extends Component {
 
                <ChooseShelfButtons
                   aria-label="Reading"
-                  onClick={event =>
-                     changeShelfOnClick(book, "currentlyReading")
-                  }
+                  onClick={event => this.updateShelf(book, "currentlyReading")}
                   key="currentlyReading"
                   {...this.props}
                >
@@ -55,7 +62,7 @@ class ShelfButtons extends Component {
 
                <ChooseShelfButtons
                   aria-label="Whishlist"
-                  onClick={event => changeShelfOnClick(book, "wantToRead")}
+                  onClick={event => this.updateShelf(book, "wantToRead")}
                   key="wantToRead"
                   {...this.props}
                >
@@ -67,7 +74,7 @@ class ShelfButtons extends Component {
 
                <ChooseShelfButtons
                   aria-label="Read"
-                  onClick={event => changeShelfOnClick(book, "read")}
+                  onClick={event => this.updateShelf(book, "read")}
                   key="read"
                   {...this.props}
                >
@@ -82,14 +89,7 @@ class ShelfButtons extends Component {
                aria-label={book.shelf}
                onClick={this.shelfButtononClick}
             >
-               <ShelfImage
-                  src={
-                     book.shelf
-                        ? require(`../../img/icons/${book.shelf}.svg`)
-                        : require(`../../img/icons/none.svg`)
-                  }
-                  alt={book.shelf}
-               />
+               <ShelfImage src={this.state.buttonImgSrc} alt={book.shelf} />
             </ShelfButton>
          </React.Fragment>
       );
